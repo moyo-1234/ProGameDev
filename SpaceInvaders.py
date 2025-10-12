@@ -30,10 +30,36 @@ def draw(Rrect,Yrect):
     Screen.blit(YHealthText,(850,20))
     pygame.display.update()
 
+def YShipMove(keys,Yrect):
+    if keys [pygame.K_LEFT]and Yrect.x > 517:
+        Yrect.x =Yrect.x - 1
+    if keys [pygame.K_RIGHT]and Yrect.x < 950:
+        Yrect.x = Yrect.x + 1
+    if keys [pygame.K_UP]and Yrect.y > 0:
+        Yrect.y = Yrect.y - 1
+    if keys [pygame.K_DOWN]and Yrect.y < 550:
+        Yrect.y = Yrect.y + 1
 
+def RShipMove(keys,Rrect):
+    if keys [pygame.K_a]and Rrect.x > 0:
+        Rrect.x = Rrect.x - 1
+    if keys [pygame.K_d]and Rrect.x < 467:
+        Rrect.x = Rrect.x + 1
+    if keys [pygame.K_w]and Rrect.y > 0:
+        Rrect.y = Rrect.y - 1
+    if keys [pygame.K_s]and Rrect.y < 550:
+        Rrect.y = Rrect.y + 1
+
+    
 
 while run:
     for i in pygame.event.get():
         if i.type == pygame.QUIT:
             run = False
+        if i.type == pygame.KEYDOWN:
+            pass
+    keys = pygame.key.get_pressed()
     draw(Rrect,Yrect)
+    YShipMove(keys,Yrect)
+    RShipMove(keys,Rrect)
+    pygame.display.update()
