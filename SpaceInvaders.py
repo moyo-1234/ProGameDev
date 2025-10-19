@@ -6,6 +6,8 @@ Yhealth = 10
 HEIGHT = 600
 WIDTH = 1000
 run = True
+MaxBul = 5
+
 Screen = pygame.display.set_mode((WIDTH,HEIGHT))
 
 pygame.display.set_caption("Space  Invaders")
@@ -19,7 +21,7 @@ Yellow = pygame.transform.scale(Yellow,(50,40))
 Yellow = pygame.transform.rotate(Yellow,270)
 Rrect = pygame.Rect(200,300,50,40)
 Yrect = pygame.Rect(700,300,50,40)
-def draw(Rrect,Yrect):
+def draw(Rrect,Yrect,RBul,YBul):
     Screen.blit(bg,(0,0))
     Screen.blit(Red,(Rrect.x,Rrect.y))
     Screen.blit(Yellow,(Yrect.x,Yrect.y))
@@ -28,6 +30,10 @@ def draw(Rrect,Yrect):
     Screen.blit(RHealthText,(50,20))
     YHealthText = font.render("Health:"+str(Yhealth),1,"yellow")
     Screen.blit(YHealthText,(850,20))
+    for i in RBul:
+        pygame.draw.rect(Screen,"red",(i))
+    for i in YBul:
+        pygame.draw.rect(Screen,"yellow",(i))
     pygame.display.update()
 
 def YShipMove(keys,Yrect):
@@ -50,16 +56,22 @@ def RShipMove(keys,Rrect):
     if keys [pygame.K_s]and Rrect.y < 550:
         Rrect.y = Rrect.y + 1
 
-    
+RBul = []
+YBul = []    
 
 while run:
     for i in pygame.event.get():
         if i.type == pygame.QUIT:
             run = False
         if i.type == pygame.KEYDOWN:
-            pass
+            if i.key == pygame.K_q and len(RBul) < MaxBul:
+                RbulRect = pygame.Rect(Rrect.x + Rrect.width,Rrect.y + Rrect.height // 2,10 ,5 )
+                RBul.append(RbulRect)
+            if i.key == pygame.K_SPACE and len(YBul) < MaxBul:
+                YBulRect = pygame.Rect(Yrect.x,Yrect.y + Yrect.height // 2,10,5)
+                YBul.append(YBulRect)
     keys = pygame.key.get_pressed()
-    draw(Rrect,Yrect)
+    draw(Rrect,Yrect,RBul,YBul)
     YShipMove(keys,Yrect)
     RShipMove(keys,Rrect)
     pygame.display.update()
