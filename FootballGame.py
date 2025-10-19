@@ -16,13 +16,13 @@ Lgoal = pygame.image.load("goalL.png")
 bg = pygame.transform.scale(bg,(800,800))
 Rgoal = pygame.transform.scale(Rgoal,(50,60))
 Lgoal = pygame.transform.scale(Lgoal,(50,60))
-Rrect = pygame.Rect(200,300,50,40)
-Lrect = pygame.Rect(700,300,50,40)
+Rrect = pygame.Rect(700,300,50,40)
+Lrect = pygame.Rect(200,300,50,40)
 
 def draw(Rrect,Lrect):
     Screen.blit(bg,(0,0))
-    Screen.blit(Rgoal,(200,300))
-    Screen.blit(Lgoal,(500,300))
+    Screen.blit(Rgoal,(Rrect.x,Rrect.y))
+    Screen.blit(Lgoal,(Lrect.x,Lrect.y))
     pygame.draw.rect(Screen,"black",(390,0,17,700))
     RHealthText = font.render("Health:"+str(RHealth),1,"red")
     Screen.blit(RHealthText,(50,20))
@@ -31,10 +31,33 @@ def draw(Rrect,Lrect):
     pygame.display.update()
 
 
+def RGoalMove(keys,Rrect):
+    if keys [pygame.K_LEFT]and Rrect.x > 407:
+        Rrect.x = Rrect.x - 1
+    if keys [pygame.K_RIGHT]and Rrect.x < 750:
+        Rrect.x = Rrect.x + 1
+    if keys [pygame.K_UP]and Rrect.y > 0:
+        Rrect.y = Rrect.y - 1
+    if keys [pygame.K_DOWN]and Rrect.y < 650:
+        Rrect.y = Rrect.y + 1
+
+def LGoalMove(keys,Lrect):
+    if keys [pygame.K_a]and Lrect.x > 0:
+        Lrect.x = Lrect.x - 1
+    if keys [pygame.K_d]and Lrect.x < 340:
+        Lrect.x = Lrect.x + 1
+    if keys [pygame.K_w]and Lrect.y > 0:
+        Lrect.y = Lrect.y - 1
+    if keys [pygame.K_s]and Lrect.y < 650:
+        Lrect.y = Lrect.y + 1
 
 
 while run:
     for i in pygame.event.get():
         if i.type == pygame.QUIT:
             run = False
+    keys = pygame.key.get_pressed()
     draw(Rrect,Lrect)
+    LGoalMove(keys,Lrect)
+    RGoalMove(keys,Rrect)
+    pygame.display.update
