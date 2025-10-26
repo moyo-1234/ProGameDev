@@ -8,6 +8,7 @@ WIDTH = 1000
 BulSpeed = 8
 run = True
 MaxBul = 5
+winner = ""
 
 Screen = pygame.display.set_mode((WIDTH,HEIGHT))
 
@@ -60,7 +61,7 @@ def RShipMove(keys,Rrect):
 RBul = []
 YBul = []
 YellowHit = pygame.USEREVENT + 1
-RedHit = pygame.USEREVENT + 1
+RedHit = pygame.USEREVENT + 2
 
 def bullet(RBul,YBul,Rrect,Yrect):
     for i in RBul:
@@ -101,11 +102,16 @@ while run:
                 YBul.append(YBulRect)
         if i.type == RedHit:
             Yhealth = Yhealth - 1
-            print("Yhealth is "+ str(Yhealth))
         if i.type == YellowHit:
-            RHealth = RHealth -1
-            print("Rhealth is "+ str(RHealth))
+            RHealth = RHealth - 1
 
+    if RHealth <= 0:
+        winner = "Yellow Spaceship wins"
+        winnertext = font.render(winner,1,"orange")
+        Screen.blit(winnertext,(500,300))
+        pygame.display.update()
+        pygame.time.delay(5000)
+        break
     keys = pygame.key.get_pressed()
     draw(Rrect,Yrect,RBul,YBul)
     YShipMove(keys,Yrect)
