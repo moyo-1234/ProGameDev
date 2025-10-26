@@ -5,6 +5,7 @@ RHealth = 10
 Yhealth = 10
 HEIGHT = 600
 WIDTH = 1000
+BulSpeed = 8
 run = True
 MaxBul = 5
 
@@ -57,7 +58,35 @@ def RShipMove(keys,Rrect):
         Rrect.y = Rrect.y + 1
 
 RBul = []
-YBul = []    
+YBul = []
+YellowHit = pygame.USEREVENT + 1
+RedHit = pygame.USEREVENT + 1
+
+def bullet(RBul,YBul,Rrect,Yrect):
+    for i in RBul:
+        i.x = i.x + BulSpeed
+        if i.colliderect(Yrect):
+            pygame.event.post(pygame.event.Event(RedHit))
+            RBul.remove(i)
+        elif i.x > 1000:
+            RBul.remove(i)
+    for i in YBul:
+        i.x = i.x - BulSpeed
+        if i.colliderect(Rrect):
+            pygame.event.post(pygame.event.Event(YellowHit))
+            YBul.remove(i)
+        elif i.x < 0:
+            YBul.remove(i)
+
+
+
+
+
+
+
+
+
+
 
 while run:
     for i in pygame.event.get():
@@ -70,8 +99,16 @@ while run:
             if i.key == pygame.K_SPACE and len(YBul) < MaxBul:
                 YBulRect = pygame.Rect(Yrect.x,Yrect.y + Yrect.height // 2,10,5)
                 YBul.append(YBulRect)
+        if i.type == RedHit:
+            Yhealth = Yhealth - 1
+            print("Yhealth is "+ str(Yhealth))
+        if i.type == YellowHit:
+            RHealth = RHealth -1
+            print("Rhealth is "+ str(RHealth))
+
     keys = pygame.key.get_pressed()
     draw(Rrect,Yrect,RBul,YBul)
     YShipMove(keys,Yrect)
     RShipMove(keys,Rrect)
+    bullet(RBul,YBul,Rrect,Yrect)
     pygame.display.update()
